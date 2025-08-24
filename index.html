@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>Псалтирь</title>
 <style>
     @font-face {
@@ -22,7 +20,6 @@
         --border-radius: 8px;
         --transition: all 0.3s ease;
         
-        /* Night mode variables */
         --night-bg: #1a1a2e;
         --night-card: #16213e;
         --night-text: #e6e6e6;
@@ -85,6 +82,7 @@
         align-items: center;
         flex-wrap: wrap;
         transition: var(--transition);
+        position: relative;
     }
     
     .nav-controls {
@@ -126,6 +124,23 @@
         padding: 8px 12px;
     }
     
+    /* Кнопка закрытия навигации */
+    .nav-close-btn {
+        display: none;
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
     /* Minimalistic content styling */
     .content-section {
         margin: 30px 0;
@@ -162,7 +177,6 @@
         font-size: 1.1em;
     }
     
-    /* Text size classes */
     .text-large {
         font-size: 1.3em;
         line-height: 1.8;
@@ -178,7 +192,6 @@
         line-height: 2.2;
     }
     
-    /* Footer navigation */
     .footer-nav {
         display: flex;
         justify-content: space-between;
@@ -201,15 +214,6 @@
         transform: translateY(-2px);
     }
     
-    /* Original navigation styling */
-    .article-single-content {
-        margin: 20px 0;
-    }
-    
-    .slavic {
-        font-family: 'TriUcs8', serif;
-    }
-    
     .slavic ul.strong {
         list-style: none;
         padding: 0;
@@ -219,10 +223,6 @@
     .slavic ul.strong li {
         margin-bottom: 15px;
         line-height: 1.6;
-    }
-    
-    .slavic ul.strong li.a {
-        margin-bottom: 20px;
     }
     
     .slavic a {
@@ -243,173 +243,114 @@
         background-color: rgba(139, 92, 246, 0.2);
     }
     
-    /* Responsive design */
+
     @media (max-width: 768px) {
-        body {
-            padding: 10px;
-            font-size: 20px;
-        }
-        
         .high-tech-nav {
+            display: none;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
+            padding: 10px;
         }
-        
-        .nav-controls {
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .nav-controls select, .nav-controls button {
-            width: 100%;
-            margin: 5px 0;
-        }
-        
-        .text-large {
-            font-size: 1.4em;
-        }
-        
-        .text-xlarge {
-            font-size: 1.7em;
-        }
-        
-        .text-xxlarge {
-            font-size: 2.0em;
-        }
-        
-        .slavic ul.strong li {
-            margin-bottom: 20px;
-        }
-    }
+
         .menu-toggle-btn {
-    display: none; /* по умолчанию скрыта */
-}
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 5px;
+            font-size: 14px;
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+        }
 
-@media (max-width: 500px) {
-    .high-tech-nav {
-        display: none; /* по умолчанию скрыта */
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 5px;
-        padding: 5px 8px;
-        justify-content: space-between;
-        align-items: center;
-        background: var(--card-bg);
-        border-radius: var(--border-radius);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        transition: max-height 0.3s ease, padding 0.3s ease;
+        .nav-controls select,
+        .nav-controls button {
+            padding: 5px 8px;
+            font-size: 12px;
+            min-width: 70px;
+        }
+
+        .font-controls button {
+            padding: 3px 5px;
+            font-size: 10px;
+        }
+
+        /* Показываем крестик */
+        .nav-close-btn {
+            display: inline-block;
+        }
     }
-
-    .nav-controls select,
-    .nav-controls button {
-        padding: 5px 8px;
-        font-size: 12px;
-        min-width: 70px;
-    }
-
-    .font-controls button {
-        padding: 3px 5px;
-        font-size: 10px;
-    }
-
-    .menu-toggle-btn {
-        display: inline-block;
-        padding: 6px 12px;
-        margin-bottom: 5px;
-        font-size: 14px;
-        background: var(--primary-color);
-        color: #fff;
-        border: none;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-    }
-}
-
 </style>
+
 <button class="menu-toggle-btn" onclick="toggleNav()">Навигация</button>
+
+</head>
+<body>
+
+<div class="high-tech-nav">
+    <!-- Close button -->
+    <button class="nav-close-btn" onclick="closeNav()">✖</button>
+
+    <div class="nav-controls">
+        <select id="kathisma-select">
+            <option value="">Кафизмы</option>
+            <option value="k1">Кафизма I</option>
+            <option value="k2">Кафизма II</option>
+            <option value="k3">Кафизма III</option>
+            <option value="k4">Кафизма IV</option>
+            <option value="k5">Кафизма V</option>
+            <option value="k6">Кафизма VI</option>
+            <option value="k7">Кафизма VII</option>
+            <option value="k8">Кафизма VIII</option>
+            <option value="k9">Кафизma IX</option>
+            <option value="k10">Кафизма X</option>
+            <option value="k11">Кафизма XI</option>
+            <option value="k12">Кафизма XII</option>
+            <option value="k13">Кафизма XIII</option>
+            <option value="k14">Кафизма XIV</option>
+            <option value="k15">Кафизма XV</option>
+            <option value="k16">Кафизма XVI</option>
+            <option value="k17">Кафизма XVII</option>
+            <option value="k18">Кафизма XVIII</option>
+            <option value="k19">Кафизма XIX</option>
+            <option value="k20">Кафизма XX</option>
+        </select>
+        
+        <select id="psalmSelect">
+            <option value="">Псалом</option>
+        </select>
+        
+        <button onclick="scrollToTop()">В начало</button>
+    </div>
+    
+    <div class="nav-controls">
+        <div class="font-controls">
+            <button onclick="changeFontSize(0)">А</button>
+            <button onclick="changeFontSize(1)">А+</button>
+            <button onclick="changeFontSize(2)">А++</button>
+        </div>
+        <button onclick="toggleNightMode()">Ночной режим</button>
+    </div>
+</div>
 
 <script>
 function toggleNav() {
     const nav = document.querySelector('.high-tech-nav');
     if (!nav) return;
-    if (nav.style.display === 'flex') {
-        nav.style.display = 'none';
-    } else {
-        nav.style.display = 'flex';
-    }
+    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
 }
-</script>
-</head>
-<body>
-    <!-- High-tech navigation -->
-    <div class="high-tech-nav">
-        <div class="nav-controls">
-            <select id="kathisma-select">
-                <option value="">Кафизмы</option>
-                <option value="k1">Кафизма I</option>
-                <option value="k2">Кафизма II</option>
-                <option value="k3">Кафизма III</option>
-                <option value="k4">Кафизма IV</option>
-                <option value="k5">Кафизма V</option>
-                <option value="k6">Кафизма VI</option>
-                <option value="k7">Кафизма VII</option>
-                <option value="k8">Кафизма VIII</option>
-                <option value="k9">Кафизma IX</option>
-                <option value="k10">Кафизма X</option>
-                <option value="k11">Кафизма XI</option>
-                <option value="k12">Кафизма XII</option>
-                <option value="k13">Кафизма XIII</option>
-                <option value="k14">Кафизма XIV</option>
-                <option value="k15">Кафизма XV</option>
-                <option value="k16">Кафизма XVI</option>
-                <option value="k17">Кафизма XVII</option>
-                <option value="k18">Кафизма XVIII</option>
-                <option value="k19">Кафизма XIX</option>
-                <option value="k20">Кафизма XX</option>
-            </select>
-            
-            <select id="psalmSelect">
-                <option value="">Псалом</option>
-            </select>
-            
-            <button onclick="scrollToTop()">В начало</button>
-        </div>
-        
-        <div class="nav-controls">
-            <div class="font-controls">
-                <button onclick="changeFontSize(0)">А</button>
-                <button onclick="changeFontSize(1)">А+</button>
-                <button onclick="changeFontSize(2)">А++</button>
-            </div>
-            <button onclick="toggleNightMode()">Ночной режим</button>
-        </div>
-    </div>
-    <script>
-        // Инициализация Telegram Web App
-        let tg = window.Telegram.WebApp;
-        tg.expand(); // Раскрываем на весь экран
-        tg.enableClosingConfirmation(); // Подтверждение закрытия
 
-        function showPsalm(number) {
-            tg.showPopup({
-                title: `Псалом ${number}`,
-                message: `Здесь будет текст ${number}-го псалма...`,
-                buttons: [{type: 'close'}]
-            });
-        }
+function closeNav() {
+    const nav = document.querySelector('.high-tech-nav');
+    if (!nav) return;
+    nav.style.display = 'none';
+}
 
-        // Обработчик данных от Telegram
-        tg.onEvent('viewportChanged', (data) => {
-            console.log('Viewport changed:', data);
-        });
-    </script>
-
-<script>
 document.addEventListener("DOMContentLoaded", function () {
-    const kathismaSelect = document.getElementById("kathisma-select"); // <-- совпадает с HTML
-    const psalmSelect    = document.getElementById("psalmSelect");
+    const kathismaSelect = document.getElementById("kathisma-select");
+    const psalmSelect = document.getElementById("psalmSelect");
 
-    // Заполняем список псалмов (1–150)
     if (psalmSelect && psalmSelect.options.length <= 1) {
         for (let i = 1; i <= 150; i++) {
             const option = document.createElement("option");
@@ -419,37 +360,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Поиск якоря по id или name
     function scrollToAnchor(value) {
         if (!value) return;
-        const target =
-            document.getElementById(value) ||
-            document.querySelector('[name="' + value + '"]');
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        const target = document.getElementById(value) || document.querySelector('[name="' + value + '"]');
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    // Навигация по кафизмам
-    if (kathismaSelect) {
-        kathismaSelect.addEventListener("change", function () {
-            scrollToAnchor(this.value);
-        });
-    }
+    kathismaSelect?.addEventListener("change", function () { scrollToAnchor(this.value); });
+    psalmSelect?.addEventListener("change", function () { scrollToAnchor(this.value); });
 
-    // Навигация по псалмам
-    if (psalmSelect) {
-        psalmSelect.addEventListener("change", function () {
-            scrollToAnchor(this.value);
-        });
-    }
+    if (localStorage.getItem("nightMode") === "true") document.body.classList.add("night-mode");
 
-    // Ночной режим из localStorage
-    if (localStorage.getItem("nightMode") === "true") {
-        document.body.classList.add("night-mode");
-    }
-
-    // Плавный скролл для ссылок с #
     document.querySelectorAll('a[href^="#"]').forEach(link => {
         link.addEventListener("click", function(e) {
             const href = this.getAttribute("href");
@@ -462,19 +383,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Кнопки интерфейса
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
 function changeFontSize(size) {
     const sizes = ['', 'text-large', 'text-xlarge', 'text-xxlarge'];
     const mainContent = document.querySelector('.main-area-content');
-    if (!mainContent) return; // чтобы не падало, если блока нет
+    if (!mainContent) return;
     mainContent.classList.remove('text-large', 'text-xlarge', 'text-xxlarge');
-    if (size > 0 && size < sizes.length) {
-        mainContent.classList.add(sizes[size]);
-    }
+    if (size > 0 && size < sizes.length) mainContent.classList.add(sizes[size]);
 }
 
 function toggleNightMode() {
@@ -482,6 +398,7 @@ function toggleNightMode() {
     localStorage.setItem('nightMode', document.body.classList.contains('night-mode'));
 }
 </script>
+
 
 <hr/>
 <h2>ДВ&amp;ДА ПРOРO~КА И# ЦР&amp;Z@ ПЭ~СНЬ.</h2>
