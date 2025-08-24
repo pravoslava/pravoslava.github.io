@@ -6,303 +6,339 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>Псалтирь</title>
-    <style>
-        @font-face {
-            font-family: 'TriUcs8';
-            src: url('TriUcs8.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
+<style>
+    @font-face {
+        font-family: 'TriUcs8';
+        src: url('TriUcs8.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    
+    :root {
+        --primary-color: #8b0000;
+        --bg-color: #f8f6f2;
+        --text-color: #333;
+        --card-bg: #fff;
+        --border-radius: 8px;
+        --transition: all 0.3s ease;
         
-        :root {
-            --primary-color: #8b0000;
-            --bg-color: #f8f6f2;
-            --text-color: #333;
-            --card-bg: #fff;
-            --border-radius: 8px;
-            --transition: all 0.3s ease;
-            
-            /* Night mode variables */
-            --night-bg: #1a1a2e;
-            --night-card: #16213e;
-            --night-text: #e6e6e6;
-            --night-primary: #8b5cf6;
-        }
-        
+        /* Night mode variables */
+        --night-bg: #1a1a2e;
+        --night-card: #16213e;
+        --night-text: #e6e6e6;
+        --night-primary: #8b5cf6;
+    }
+    
+    body {
+        font-family: 'TriUcs8', serif;
+        line-height: 1.6;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-size: 18px;
+        transition: var(--transition);
+    }
+    
+    body.night-mode {
+        --bg-color: var(--night-bg);
+        --card-bg: var(--night-card);
+        --text-color: var(--night-text);
+        --primary-color: var(--night-primary);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+    
+    .main-area-content {
+        background-color: var(--card-bg);
+        padding: 20px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        transition: var(--transition);
+    }
+    
+    h1, h2, h3 {
+        color: var(--primary-color);
+        text-align: center;
+        transition: var(--transition);
+    }
+    
+    h1 {
+        font-size: 28px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+    }
+    
+    /* High-tech navigation */
+    .high-tech-nav {
+        position: sticky;
+        top: 0;
+        background: var(--card-bg);
+        padding: 15px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        transition: var(--transition);
+    }
+    
+    .nav-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .nav-controls select, .nav-controls button {
+        padding: 10px 15px;
+        border: 1px solid var(--primary-color);
+        border-radius: var(--border-radius);
+        background: var(--card-bg);
+        color: var(--text-color);
+        font-size: 16px;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .nav-controls button {
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        min-width: 120px;
+    }
+    
+    .nav-controls button:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+    
+    .font-controls {
+        display: flex;
+        gap: 5px;
+    }
+    
+    .font-controls button {
+        min-width: auto;
+        padding: 8px 12px;
+    }
+    
+    /* Minimalistic content styling */
+    .content-section {
+        margin: 30px 0;
+        padding: 20px;
+        border-left: 3px solid var(--primary-color);
+        background: rgba(139, 0, 0, 0.03);
+        transition: var(--transition);
+    }
+    
+    body.night-mode .content-section {
+        background: rgba(139, 92, 246, 0.05);
+    }
+    
+    .psalm-verse {
+        margin: 12px 0;
+        padding-left: 15px;
+        line-height: 1.8;
+        transition: var(--transition);
+    }
+    
+    .n {
+        color: var(--primary-color);
+        font-weight: bold;
+    }
+    
+    .k {
+        color: #c0392b;
+        font-style: italic;
+    }
+    
+    .l {
+        color: var(--primary-color);
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    
+    /* Text size classes */
+    .text-large {
+        font-size: 1.3em;
+        line-height: 1.8;
+    }
+    
+    .text-xlarge {
+        font-size: 1.6em;
+        line-height: 2.0;
+    }
+    
+    .text-xxlarge {
+        font-size: 1.9em;
+        line-height: 2.2;
+    }
+    
+    /* Footer navigation */
+    .footer-nav {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #ccc;
+    }
+    
+    .footer-nav a {
+        padding: 12px 20px;
+        background: var(--primary-color);
+        color: white;
+        text-decoration: none;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+    }
+    
+    .footer-nav a:hover {
+        opacity: 0.9;
+        transform: translateY(-2px);
+    }
+    
+    /* Original navigation styling */
+    .article-single-content {
+        margin: 20px 0;
+    }
+    
+    .slavic {
+        font-family: 'TriUcs8', serif;
+    }
+    
+    .slavic ul.strong {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .slavic ul.strong li {
+        margin-bottom: 15px;
+        line-height: 1.6;
+    }
+    
+    .slavic ul.strong li.a {
+        margin-bottom: 20px;
+    }
+    
+    .slavic a {
+        color: var(--primary-color);
+        text-decoration: none;
+        transition: var(--transition);
+        margin: 0 3px;
+        padding: 3px 6px;
+        border-radius: 3px;
+    }
+    
+    .slavic a:hover {
+        background-color: rgba(139, 0, 0, 0.1);
+        text-decoration: underline;
+    }
+    
+    body.night-mode .slavic a:hover {
+        background-color: rgba(139, 92, 246, 0.2);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
         body {
-            font-family: 'TriUcs8', serif;
-            line-height: 1.6;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-size: 18px;
-            transition: var(--transition);
+            padding: 10px;
+            font-size: 20px;
         }
         
-        /* Night mode */
-        body.night-mode {
-            --bg-color: var(--night-bg);
-            --card-bg: var(--night-card);
-            --text-color: var(--night-text);
-            --primary-color: var(--night-primary);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-        
-        .main-area-content {
-            background-color: var(--card-bg);
-            padding: 20px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: var(--transition);
-        }
-        
-        h1, h2, h3 {
-            color: var(--primary-color);
-            text-align: center;
-            transition: var(--transition);
-        }
-        
-        h1 {
-            font-size: 28px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-        
-        /* High-tech navigation */
         .high-tech-nav {
-            position: sticky;
-            top: 0;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            transition: var(--transition);
+            flex-direction: column;
+            gap: 15px;
         }
         
         .nav-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         
         .nav-controls select, .nav-controls button {
-            padding: 10px 15px;
-            border: 1px solid var(--primary-color);
-            border-radius: var(--border-radius);
-            background: var(--card-bg);
-            color: var(--text-color);
-            font-size: 16px;
-            cursor: pointer;
-            transition: var(--transition);
+            width: 100%;
+            margin: 5px 0;
         }
         
-        .nav-controls button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            min-width: 120px;
-        }
-        
-        .nav-controls button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        .font-controls {
-            display: flex;
-            gap: 5px;
-        }
-        
-        .font-controls button {
-            min-width: auto;
-            padding: 8px 12px;
-        }
-        
-        /* Minimalistic content styling */
-        .content-section {
-            margin: 30px 0;
-            padding: 20px;
-            border-left: 3px solid var(--primary-color);
-            background: rgba(139, 0, 0, 0.03);
-            transition: var(--transition);
-        }
-        
-        body.night-mode .content-section {
-            background: rgba(139, 92, 246, 0.05);
-        }
-        
-        .psalm-verse {
-            margin: 12px 0;
-            padding-left: 15px;
-            line-height: 1.8;
-            transition: var(--transition);
-        }
-        
-        .n {
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        .k {
-            color: #c0392b;
-            font-style: italic;
-        }
-        
-        .l {
-            color: var(--primary-color);
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        
-        /* Text size classes */
         .text-large {
-            font-size: 1.3em;
-            line-height: 1.8;
+            font-size: 1.4em;
         }
         
         .text-xlarge {
-            font-size: 1.6em;
-            line-height: 2.0;
+            font-size: 1.7em;
         }
         
         .text-xxlarge {
-            font-size: 1.9em;
-            line-height: 2.2;
-        }
-        
-        /* Footer navigation */
-        .footer-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #ccc;
-        }
-        
-        .footer-nav a {
-            padding: 12px 20px;
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-        }
-        
-        .footer-nav a:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-        
-        /* Original navigation styling */
-        .article-single-content {
-            margin: 20px 0;
-        }
-        
-        .slavic {
-            font-family: 'TriUcs8', serif;
-        }
-        
-        .slavic ul.strong {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+            font-size: 2.0em;
         }
         
         .slavic ul.strong li {
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-        
-        .slavic ul.strong li.a {
             margin-bottom: 20px;
         }
-        
-        .slavic a {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: var(--transition);
-            margin: 0 3px;
-            padding: 3px 6px;
-            border-radius: 3px;
-        }
-        
-        .slavic a:hover {
-            background-color: rgba(139, 0, 0, 0.1);
-            text-decoration: underline;
-        }
-        
-        body.night-mode .slavic a:hover {
-            background-color: rgba(139, 92, 246, 0.2);
-        }
-        
-        /* Responsive design */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-                font-size: 20px;
-            }
-            
-            .high-tech-nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .nav-controls {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .nav-controls select, .nav-controls button {
-                width: 100%;
-                margin: 5px 0;
-            }
-            
-            .text-large {
-                font-size: 1.4em;
-            }
-            
-            .text-xlarge {
-                font-size: 1.7em;
-            }
-            
-            .text-xxlarge {
-                font-size: 2.0em;
-            }
-            
-            .slavic ul.strong li {
-                margin-bottom: 20px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            body {
-                font-size: 22px;
-            }
-            
-            .footer-nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .footer-nav a {
-                text-align: center;
-            }
-            
-            .slavic a {
-                display: inline-block;
-                margin: 2px;
-            }
-        }
-    </style>
+    }
+        .menu-toggle-btn {
+    display: none; /* по умолчанию скрыта */
+}
+
+@media (max-width: 500px) {
+    .high-tech-nav {
+        display: none; /* по умолчанию скрыта */
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 5px 8px;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--card-bg);
+        border-radius: var(--border-radius);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .nav-controls select,
+    .nav-controls button {
+        padding: 5px 8px;
+        font-size: 12px;
+        min-width: 70px;
+    }
+
+    .font-controls button {
+        padding: 3px 5px;
+        font-size: 10px;
+    }
+
+    .menu-toggle-btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 5px;
+        font-size: 14px;
+        background: var(--primary-color);
+        color: #fff;
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+    }
+}
+
+</style>
+<button class="menu-toggle-btn" onclick="toggleNav()">Навигация</button>
+
+<script>
+function toggleNav() {
+    const nav = document.querySelector('.high-tech-nav');
+    if (!nav) return;
+    if (nav.style.display === 'flex') {
+        nav.style.display = 'none';
+    } else {
+        nav.style.display = 'flex';
+    }
+}
+</script>
 </head>
 <body>
     <!-- High-tech navigation -->
