@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>Псалтирь</title>
     <style>
         @font-face {
@@ -347,6 +348,26 @@
             <button onclick="toggleNightMode()">Ночной режим</button>
         </div>
     </div>
+    <script>
+        // Инициализация Telegram Web App
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Раскрываем на весь экран
+        tg.enableClosingConfirmation(); // Подтверждение закрытия
+
+        function showPsalm(number) {
+            tg.showPopup({
+                title: `Псалом ${number}`,
+                message: `Здесь будет текст ${number}-го псалма...`,
+                buttons: [{type: 'close'}]
+            });
+        }
+
+        // Обработчик данных от Telegram
+        tg.onEvent('viewportChanged', (data) => {
+            console.log('Viewport changed:', data);
+        });
+    </script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const kathismaSelect = document.getElementById("kathisma-select"); // <-- совпадает с HTML
